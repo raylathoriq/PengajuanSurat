@@ -15,9 +15,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
     private lateinit var databaseHelper: SuratDatabaseHelper
@@ -33,7 +30,6 @@ class MainActivity : AppCompatActivity() {
 
     private val suratList = mutableListOf<SuratPengajuan>()
     private var selectedSurat: SuratPengajuan? = null
-    private val tanggalFormat = SimpleDateFormat("dd MMM yyyy HH:mm", Locale.forLanguageTag("id-ID"))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -160,7 +156,7 @@ class MainActivity : AppCompatActivity() {
                 val detail = view.findViewById<TextView>(android.R.id.text2)
 
                 judul.text = "${surat?.jenisSurat} - ${surat?.nama}"
-                detail.text = "NIM ${surat?.nim} | ${formatTanggal(surat?.createdAt)}"
+                detail.text = "NIM ${surat?.nim} | ${surat?.keperluan}"
 
                 return view
             }
@@ -192,10 +188,6 @@ class MainActivity : AppCompatActivity() {
         simpanButton.isEnabled = true
         hapusButton.isEnabled = false
         namaInput.requestFocus()
-    }
-
-    private fun formatTanggal(createdAt: Long?): String {
-        return if (createdAt == null) "-" else tanggalFormat.format(Date(createdAt))
     }
 
     private fun tampilkanPesan(pesan: String) {

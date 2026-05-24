@@ -16,8 +16,7 @@ class SuratDatabaseHelper(context: Context) :
                 $COLUMN_NAMA TEXT NOT NULL,
                 $COLUMN_NIM TEXT NOT NULL,
                 $COLUMN_JENIS_SURAT TEXT NOT NULL,
-                $COLUMN_KEPERLUAN TEXT NOT NULL,
-                $COLUMN_CREATED_AT INTEGER NOT NULL
+                $COLUMN_KEPERLUAN TEXT NOT NULL
             )
             """.trimIndent()
         )
@@ -29,7 +28,7 @@ class SuratDatabaseHelper(context: Context) :
     }
 
     fun tambahSurat(surat: SuratPengajuan): Long {
-        val values = surat.toContentValues(includeCreatedAt = true)
+        val values = surat.toContentValues()
         return writableDatabase.insert(TABLE_SURAT, null, values)
     }
 
@@ -53,8 +52,7 @@ class SuratDatabaseHelper(context: Context) :
                         nama = it.getString(it.getColumnIndexOrThrow(COLUMN_NAMA)),
                         nim = it.getString(it.getColumnIndexOrThrow(COLUMN_NIM)),
                         jenisSurat = it.getString(it.getColumnIndexOrThrow(COLUMN_JENIS_SURAT)),
-                        keperluan = it.getString(it.getColumnIndexOrThrow(COLUMN_KEPERLUAN)),
-                        createdAt = it.getLong(it.getColumnIndexOrThrow(COLUMN_CREATED_AT))
+                        keperluan = it.getString(it.getColumnIndexOrThrow(COLUMN_KEPERLUAN))
                     )
                 )
             }
@@ -71,15 +69,12 @@ class SuratDatabaseHelper(context: Context) :
         )
     }
 
-    private fun SuratPengajuan.toContentValues(includeCreatedAt: Boolean): ContentValues {
+    private fun SuratPengajuan.toContentValues(): ContentValues {
         return ContentValues().apply {
             put(COLUMN_NAMA, nama)
             put(COLUMN_NIM, nim)
             put(COLUMN_JENIS_SURAT, jenisSurat)
             put(COLUMN_KEPERLUAN, keperluan)
-            if (includeCreatedAt) {
-                put(COLUMN_CREATED_AT, createdAt)
-            }
         }
     }
 
@@ -93,6 +88,5 @@ class SuratDatabaseHelper(context: Context) :
         private const val COLUMN_NIM = "nim"
         private const val COLUMN_JENIS_SURAT = "jenis_surat"
         private const val COLUMN_KEPERLUAN = "keperluan"
-        private const val COLUMN_CREATED_AT = "created_at"
     }
 }
